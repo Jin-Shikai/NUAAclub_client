@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/fragment_home">
+<Button
+    android:id="@+id/newEssay"
+    android:text="发新帖"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/refresh"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/newEssay">
+        <ListView
+            android:cacheColorHint="#E2C6F4"
+            android:listSelector="#6A209C"
+            android:layout_marginTop="50dp"
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <!-- place your view here -->
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

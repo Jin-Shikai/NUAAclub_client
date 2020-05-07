@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#eee"
+    android:descendantFocusability="blocksDescendants">
+
+    <RelativeLayout
+        android:id="@+id/itemlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/essaySender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="发件人"
+            android:textSize="20sp" />
+        <TextView
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="end"
+            android:lines="3"
+            android:id="@+id/essayContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正文"
+            android:textSize="15sp"
+            android:layout_below="@id/essaySender"
+            />
+        <TextView
+            android:id="@+id/createTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/essaySender"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:text="发送时间"
+            />
+        <TextView
+            android:id="@+id/replyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/createTime"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="100dp"
+            android:text="回复:"
+            />
+        <TextView
+            android:id="@+id/replyCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/replyText"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="回复"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
