@@ -33,6 +33,10 @@ public class editEssayFragment extends BaseFragment {
     String textContent;
     Button mSubmit;
     EditText mText;
+    public String getRandomID(String dateTime,String token)
+    {
+        return (((Integer.valueOf(dateTime.charAt(13))+3)*7)%10)+token.substring(1,3)+dateTime.charAt(12)+token.substring(10,12);
+    }
     @Override
     protected View initView() {
         View view = View.inflate(mContext, R.layout.fragment_editessay, null);
@@ -86,8 +90,8 @@ public class editEssayFragment extends BaseFragment {
                         map.put("text", textContent);
                         map.put("createDate",timeStr);
                         map.put("latestDate",timeStr);
-                        map.put("creatorID",token);
-                        map.put("creator",token.substring(0,5));//此处后期应修改为匿名token
+                        map.put("userID",token);
+                        map.put("creator",getRandomID(timeStr,token));
                         map.put("essayID",token.substring(0,5)+"_"+timeStrForName);//权宜之计
                         map.put("status","2");
                         return map;
