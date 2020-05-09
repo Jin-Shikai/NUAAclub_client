@@ -14,12 +14,12 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/newEssay">
         <ListView
-            android:cacheColorHint="#E2C6F4"
-            android:listSelector="#6A209C"
+            android:drawSelectorOnTop="false"
+            android:listSelector="@drawable/item_selector"
             android:layout_marginTop="50dp"
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
         <!-- place your view here -->
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

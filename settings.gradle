@@ -1,2 +1,2 @@
-include ':app', ':sample-okhttp', ':okhttputils'
+include ':app'
 rootProject.name='NUAAclub'

@@ -175,23 +175,32 @@ public class homeFragment extends BaseFragment {
                         list.add(map);
                     }
                     //设置适配器
-                    SimpleAdapter adapter = new SimpleAdapter(
-                            mContext,//上下文
-                            list,//装map<String,String>的list
-                            R.layout.essayitem,
-                            new String[]{
-                                    "creator",
-                                    "text",
-                                    "createDate",
-                                    "replyCount"
-                            },//和map的key按位置绑定
-                            new int[]{R.id.essaySender,
-                                    R.id.essayContent,
-                                    R.id.createTime,
-                                    R.id.replyCount
-                            }//和视图ID绑定
-                    );
+//                    SimpleAdapter adapter = new SimpleAdapter(
+//                            mContext,//上下文
+//                            list,//装map<String,String>的list
+//                            R.layout.essayitem,
+//                            new String[]{
+//                                    "creator",
+//                                    "text",
+//                                    "createDate",
+//                                    "replyCount"
+//                            },//和map的key按位置绑定
+//                            new int[]{R.id.essaySender,
+//                                    R.id.essayContent,
+//                                    R.id.createTime,
+//                                    R.id.replyCount
+//                            }//和视图ID绑定
+//                    );
+                    homeFragmentAdapter adapter= new homeFragmentAdapter(mContext);
+                    adapter.setList(list);
+
                     mlistView.setAdapter(adapter);
+                    mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Toast.makeText(mContext,"点击"+position,Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } catch (NullPointerException n){
                     n.printStackTrace();
                 } catch (JSONException e) {

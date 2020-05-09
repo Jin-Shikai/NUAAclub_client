@@ -1,51 +1,64 @@
 package com.NUAA.nuaaclub.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
+
+import com.NUAA.nuaaclub.R;
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import com.NUAA.nuaaclub.base.BaseFragment;
 
 import org.w3c.dom.Text;
 
-import java.util.List;
+import java.util.*;
 
 public class homeFragmentAdapter extends BaseAdapter {
-    private String mDatas[];
-    private Context mContext;
-    public homeFragmentAdapter(Context context,String[] datas)
-    {
-        this.mContext=context;
-        this.mDatas=datas;
+
+    //数据列表
+    List<Map<String,Object>> list;
+    //反射器
+    LayoutInflater inflater;
+
+    public homeFragmentAdapter(Context context) {
+        this.inflater=LayoutInflater.from(context);
+    }
+
+    public void setList(List<Map<String, Object>> list) {
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-        return mDatas.length;
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View converView, ViewGroup parent)
     {
-        TextView textView = new TextView(mContext);
-        textView.setTextColor(Color.BLACK);
-        textView.setPadding(10,10,0,10);
-        textView.setTextSize(20);
-        textView.setText(mDatas[position]);
-        return textView;
+        View view=inflater.inflate(R.layout.essayitem,null);
+        TextView creator=(TextView) view.findViewById(R.id.essaySender);
+        TextView text=(TextView) view.findViewById(R.id.essayContent);
+        TextView createDate=(TextView) view.findViewById(R.id.createTime);
+        TextView replyCount=(TextView) view.findViewById(R.id.replyCount);
+
+        Map map=list.get(position);
+        creator.setText(map.get("creator").toString());
+        text.setText(map.get("text").toString());
+        createDate.setText(map.get("createDate").toString());
+        replyCount.setText(map.get("replyCount").toString());
+
+        return view;
     }
 }
