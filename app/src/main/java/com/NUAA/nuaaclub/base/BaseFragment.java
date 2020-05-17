@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext=getActivity();
         //步骤1：创建一个SharedPreferences对象
-        sharedPreferences= mContext.getSharedPreferences("data", Context.MODE_PRIVATE);
+        sharedPreferences= MainActivity.sharedPreferences;
         //步骤2： 实例化SharedPreferences.Editor对象
         editor = sharedPreferences.edit();
     }

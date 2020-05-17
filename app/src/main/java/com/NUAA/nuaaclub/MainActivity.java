@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NUAA.nuaaclub.base.BaseFragment;
-import com.NUAA.nuaaclub.fragment.editEssayFragment;
 import com.NUAA.nuaaclub.fragment.homeFragment;
 import com.NUAA.nuaaclub.fragment.infoFragment;
 import com.NUAA.nuaaclub.fragment.infoFragment_ok;
@@ -42,16 +41,7 @@ import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
     public FragmentTransaction ft;
-    private JSONObject mjsonObject;
-    public JSONObject mainjsonObject;
-    public SharedPreferences sharedPreferences;
-    private Button get_request;
-    private Button post_request;
-    private Button pic_request;
-    private Button pic_network_request;
-    private ImageView iv_volley_result;
-    private NetworkImageView iv_volley_network;
-    private TextView tv_volley_result;
+    public static SharedPreferences sharedPreferences;
 
     public RadioGroup mRg_main;
     private List<BaseFragment> mBaseFragmentList;
@@ -72,7 +62,6 @@ public class MainActivity extends FragmentActivity {
         //设置监听
         setListener();
         //默认选中首页
-       //initListner();
         mRg_main.check(R.id.rb_home);
     }
 
@@ -156,19 +145,10 @@ public class MainActivity extends FragmentActivity {
         mBaseFragmentList.add(new messageFragment());//私信界面: 1
         mBaseFragmentList.add(new infoFragment());//个人信息界面: 2
         mBaseFragmentList.add(new infoFragment_ok());//已登录界面: 3
-        mBaseFragmentList.add(new editEssayFragment());//发帖界面: 4
     }
 
     private void initView() {
         setContentView(R.layout.activity_main);
         mRg_main = (RadioGroup) findViewById(R.id.rg_main);
-        //tv_volley_result=(TextView)findViewById(R.id.tv_volley_result);
-//        get_request=(Button) findViewById(R.id.get_request);
-//        post_request=(Button) findViewById(R.id.post_request);
-//        pic_request=(Button) findViewById(R.id.pic_request);
-//        pic_network_request=(Button) findViewById(R.id.pic_network_request);
-//        iv_volley_result=(ImageView)findViewById(R.id.iv_volley_result);
-//        iv_volley_network=(NetworkImageView)findViewById(R.id.iv_volley_network);
-//        tv_volley_result=(TextView)findViewById(R.id.tv_volley_result);
     }
 }

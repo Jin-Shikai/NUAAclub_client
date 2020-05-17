@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/activity_eassy"
+    android:orientation="vertical">
+    <include layout="@layout/titlebar"/>
+    <Button
+        android:id="@+id/makeReplyBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发回复"/>
+    <include layout="@layout/item_first"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/essayrefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ListView
+            android:drawSelectorOnTop="false"
+            android:listSelector="@drawable/item_selector"
+            android:id="@+id/essayListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

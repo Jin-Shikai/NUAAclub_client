@@ -36,7 +36,7 @@ public class homeFragmentAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        return list.get(position).get("essayID");
     }
 
     @Override

@@ -1,28 +1,18 @@
 package com.NUAA.nuaaclub.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Handler;
-import android.text.Layout;
-import android.util.LayoutDirection;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.NUAA.nuaaclub.EssayActivity;
+import com.NUAA.nuaaclub.EditEssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
 import com.NUAA.nuaaclub.StringRequestOverride.StringRequestWithToken;
@@ -37,18 +27,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,13 +73,7 @@ public class homeFragment extends BaseFragment {
                 }, 2500);
             }
         });
-        //为listView设置监听器
-//        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String data = datas[position];
-//            }
-//        });
+
 
         Button newEassy=(Button)view.findViewById(R.id.newEssay);
         //为发新帖按钮设置监听器
@@ -112,16 +93,12 @@ public class homeFragment extends BaseFragment {
                         if(s.equals("101"))
                         {
                             mainActivity.mRg_main.check(R.id.rb_info);
-//                            BaseFragment to =mainActivity.getFrament(4);
-//                            //替换
-//                            mainActivity.switchFragment(homeFragment.this,to);
                         }
                         else
                         {
-                            initData();
-                            BaseFragment to =mainActivity.getFrament(4);
-                            //替换
-                            mainActivity.switchFragment(homeFragment.this,to);
+                            Intent intent = new Intent(mainActivity, EditEssayActivity.class);
+                            intent.putExtra("flag",1);
+                            startActivity(intent);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -140,12 +117,13 @@ public class homeFragment extends BaseFragment {
                 requestQueue.add(stringRequest);
             }
         });
+
         return view;
     }
 
     @Override
     protected void initData() {
-        Log.e(TAG,"主页页面");
+        Log.e(TAG, "主页页面");
         //准备数据
         //1. 创建请求队列
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
@@ -153,55 +131,34 @@ public class homeFragment extends BaseFragment {
         String url = "http://192.168.1.37:8080/LoginDemo/requestListServlet";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONArray  jsonArray) {
-//                //步骤3：将获取过来的值放入文件
-//                editor.putString("essayJsonString", jsonArray.toString());
-//                //步骤4：提交
-//                editor.commit();
-//                String jsonstring=sharedPreferences.getString("essayJsonString","");
-//                net.sf.json.JSONArray mJsonArray= net.sf.json.JSONArray.fromObject(jsonstring);
+            public void onResponse(JSONArray jsonArray) {
                 //准备List资源文件
-                List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+                List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
                 try {
-                    for(int i=0;i<jsonArray.length()-1;i++)
-                    {
-                        JSONObject essay =(JSONObject) jsonArray.get(i);
+                    for (int i = 0; i < jsonArray.length() - 1; i++) {
+                        JSONObject essay = (JSONObject) jsonArray.get(i);
                         //准备每一项的资源文件
-                        Map<String,Object> map = new HashMap<String, Object>();
-                        map.put("creator",essay.getString("creator"));
-                        map.put("text",essay.getString("text"));
-                        map.put("createDate",essay.getString("createDate").substring(0,11));
-                        map.put("replyCount",essay.get("replyCount"));
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("creator", essay.getString("creator"));
+                        map.put("text", essay.getString("text"));
+                        map.put("createDate", essay.getString("createDate").substring(0, 11));
+                        map.put("replyCount", essay.get("replyCount"));
+                        map.put("essayID", essay.get("essayID"));
                         list.add(map);
                     }
-                    //设置适配器
-//                    SimpleAdapter adapter = new SimpleAdapter(
-//                            mContext,//上下文
-//                            list,//装map<String,String>的list
-//                            R.layout.essayitem,
-//                            new String[]{
-//                                    "creator",
-//                                    "text",
-//                                    "createDate",
-//                                    "replyCount"
-//                            },//和map的key按位置绑定
-//                            new int[]{R.id.essaySender,
-//                                    R.id.essayContent,
-//                                    R.id.createTime,
-//                                    R.id.replyCount
-//                            }//和视图ID绑定
-//                    );
-                    homeFragmentAdapter adapter= new homeFragmentAdapter(mContext);
+                    final homeFragmentAdapter adapter = new homeFragmentAdapter(mContext);
                     adapter.setList(list);
-
-                    mlistView.setAdapter(adapter);
+                    //为essay列表设置点击事件, 根据essayID跳转
                     mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Toast.makeText(mContext,"点击"+position,Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, EssayActivity.class);
+                            intent.putExtra("essayID",adapter.getItem(position).toString());
+                            startActivity(intent);
                         }
                     });
-                } catch (NullPointerException n){
+                    mlistView.setAdapter(adapter);
+                } catch (NullPointerException n) {
                     n.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -211,11 +168,9 @@ public class homeFragment extends BaseFragment {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
             }
-        })
-        {
+        }) {
             @Override
-            protected Response<JSONArray>  parseNetworkResponse(NetworkResponse response)
-            {
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
                 response.headers.put("HTTP.CONTENT_TYPE", "utf-8");
                 try {
                     String jsonString = new String(response.data, "utf-8");
@@ -231,6 +186,6 @@ public class homeFragment extends BaseFragment {
         };
         //5. 将请求添加入请求队列
         requestQueue.add(jsonArrayRequest);
-    }
 
+    }
 }
