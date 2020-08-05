@@ -102,7 +102,6 @@ public class infoFragment extends BaseFragment{
 
             //登录按钮监听
             mBtnLogin = (Button) view.findViewById(R.id.loginbtn);
-            final View finalView = view;
             mBtnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -121,8 +120,8 @@ public class infoFragment extends BaseFragment{
                                 editor.putString("token", s);
                                 //步骤4：提交
                                 editor.commit();
-                                MainActivity mainActivity=(MainActivity)getActivity();
-                                BaseFragment to =mainActivity.getFrament(3);
+                                MainActivity mainActivity = (MainActivity)getActivity();
+                                BaseFragment to = mainActivity.getFrament(3);
                                 //替换
                                 mainActivity.switchFragment(infoFragment.this,to);
                             } else
@@ -131,6 +130,7 @@ public class infoFragment extends BaseFragment{
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(mContext, "网络似乎不通了", Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override

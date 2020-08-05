@@ -48,7 +48,6 @@ public class MainActivity extends FragmentActivity {
     private int position;//选择的Fragment对应的位置
     private Fragment mContent;//上次要保存的Fragment
 
-    String url = "http://192.168.1.37:8080/LoginDemo/essay/20200502.json";
     private Object homeFragment= new homeFragment();
 
     @Override

@@ -118,8 +118,17 @@ public class EditEssayActivity extends AppCompatActivity {
                 //3. 将请求添加入请求队列
                 requestQueue.add(stringRequest);
 
-                Intent intent = new Intent(EditEssayActivity.this, MainActivity.class);
-                startActivity(intent);
+
+                if(flag==1)
+                {
+                    Intent intent = new Intent(EditEssayActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+                }
+                else
+                {
+                    finish();
+                }
             }
         });
     }
