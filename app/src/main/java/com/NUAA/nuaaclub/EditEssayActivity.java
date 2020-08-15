@@ -84,7 +84,7 @@ public class EditEssayActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<String, String>();
                         //获取日期格式
-                        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd HH:mm:ss");
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         //获取日期
                         Date curDate = new Date(System.currentTimeMillis());
                         //得到用于显示的时间
@@ -97,7 +97,7 @@ public class EditEssayActivity extends AppCompatActivity {
                         map.put("userID", token);//发送者ID
                         if(flag==1)
                         {
-                            SimpleDateFormat formatterForName = new SimpleDateFormat("MM-dd HH-mm-ss");
+                            SimpleDateFormat formatterForName = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String timeStrForName = formatterForName.format(curDate);
                             map.put("latestDate", timeStr);
                             map.put("essayID", token.substring(0, 5) + "_" + timeStrForName);//权宜之计
