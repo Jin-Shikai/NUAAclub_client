@@ -50,13 +50,13 @@ public class homeFragmentAdapter extends BaseAdapter {
         View view=inflater.inflate(R.layout.essayitem,null);
         TextView creator=(TextView) view.findViewById(R.id.essaySender);
         TextView text=(TextView) view.findViewById(R.id.essayContent);
-        TextView createDate=(TextView) view.findViewById(R.id.createTime);
+        TextView createDate=(TextView) view.findViewById(R.id.createTime_New);
         TextView replyCount=(TextView) view.findViewById(R.id.replyCount);
 
         Map map=list.get(position);
-        creator.setText(map.get("creator").toString());
+        creator.setText(map.get("creator").toString().substring(3,8));
         text.setText(map.get("text").toString());
-        createDate.setText(map.get("createDate").toString());
+        createDate.setText(map.get("createDate").toString().substring(5,16));
         replyCount.setText(map.get("replyCount").toString());
 
         return view;

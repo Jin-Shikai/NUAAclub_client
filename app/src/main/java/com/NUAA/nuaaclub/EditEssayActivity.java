@@ -92,17 +92,18 @@ public class EditEssayActivity extends AppCompatActivity {
                         //得到标识符token
                         token = MainActivity.sharedPreferences.getString("token", "");
                         //初始化共性参数
-                        map.put("createDate", timeStr);//发送时间
+                        map.put("createDate_New", timeStr);//发送时间
                         map.put("text", textContent);//发送内容
                         map.put("userID", token);//发送者ID
                         if(flag==1)
                         {
+                            String creator = getRandomID(timeStr, token);
                             SimpleDateFormat formatterForName = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String timeStrForName = formatterForName.format(curDate);
-                            map.put("latestDate", timeStr);
-                            map.put("essayID", token.substring(0, 5) + "_" + timeStrForName);//权宜之计
+                            map.put("latestDate_New", timeStr);
+                            map.put("essayID", creator + "_" + timeStrForName.substring(0,10));//权宜之计
                             map.put("status", "2");//普通贴子
-                            map.put("creator", getRandomID(timeStr, token));//发送者匿名ID
+                            map.put("creator", creator);//发送者匿名ID
                         }
                         else if(flag==2)
                         {
@@ -135,7 +136,7 @@ public class EditEssayActivity extends AppCompatActivity {
 
     public String getRandomID(String dateTime,String token)
     {
-        return (((Integer.valueOf(dateTime.charAt(13))+3)*7)%10)+token.substring(1,3)+dateTime.charAt(12)+token.substring(10,12);
+        return (((Integer.valueOf(dateTime.charAt(18))+3)*71)%10)+token.substring(1,8)+dateTime.charAt(18)+token.substring(10,12);
     }
 
 }
