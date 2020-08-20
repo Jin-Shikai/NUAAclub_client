@@ -106,7 +106,7 @@ public class EssayActivity extends Activity {
                     //将1L的信息硬写上去
                     firstSender.setText(jsonObject.getString("creator"));
                     firstText.setText(jsonObject.getString("text"));
-                    firstCreateTime.setText(jsonObject.getString("createDate").substring(0,11));
+                    firstCreateTime.setText(jsonObject.getString("createDate").substring(5,15));
                     firstReplyCount.setText(jsonObject.getString("replyCount"));
 
                     JSONArray replyArray= (JSONArray)jsonObject.get("replyList");
@@ -117,7 +117,7 @@ public class EssayActivity extends Activity {
                         map = new HashMap<String, Object>();
                         map.put("creator", reply.getString("creator"));//回复创建者
                         map.put("text", reply.getString("text"));//回复的文本
-                        map.put("createDate", reply.getString("createDate").substring(0, 11));//回复的时间
+                        map.put("createDate", reply.getString("createDate").substring(5, 15));//回复的时间
                         map.put("replyCount", reply.get("commentCount"));//回复的评论数
                         //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                         //这条信息在之后使用
