@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class EditEssayActivity extends AppCompatActivity {
 
@@ -93,6 +94,7 @@ public class EditEssayActivity extends AppCompatActivity {
                         token = MainActivity.sharedPreferences.getString("token", "");
                         //初始化共性参数
                         map.put("createDate_New", timeStr);//发送时间
+                        map.put("createDate", timeStr);//发送时间
                         map.put("text", textContent);//发送内容
                         map.put("userID", token);//发送者ID
                         if(flag==1)
@@ -119,24 +121,32 @@ public class EditEssayActivity extends AppCompatActivity {
                 //3. 将请求添加入请求队列
                 requestQueue.add(stringRequest);
 
-
-                if(flag==1)
-                {
-                    Intent intent = new Intent(EditEssayActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(intent);
-                }
-                else
-                {
-                    finish();
-                }
+                finish();
+//                if(flag==1)
+//                {
+//                    Intent intent = new Intent(EditEssayActivity.this, MainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                    startActivity(intent);
+//                }
+//                else
+//                {
+//                    finish();
+//                }
             }
         });
     }
 
     public String getRandomID(String dateTime,String token)
     {
-        return (((Integer.valueOf(dateTime.charAt(18))+3)*71)%10)+token.substring(1,8)+dateTime.charAt(18)+token.substring(10,12);
+        Random rand =new Random(25);
+        String s = (String.valueOf(rand.nextInt(19))
+                + String.valueOf(dateTime.charAt(18))
+                + token.charAt(7)
+                + (((Integer.valueOf(dateTime.charAt(17))+3)*71)%10)
+                + ((Integer.valueOf(dateTime.charAt(18))*4567)%10)
+                + (token.charAt(10))
+                + "");
+        return s;
     }
 
 }

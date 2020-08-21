@@ -54,9 +54,9 @@ public class homeFragmentAdapter extends BaseAdapter {
         TextView replyCount=(TextView) view.findViewById(R.id.replyCount);
 
         Map map=list.get(position);
-        creator.setText(map.get("creator").toString().substring(3,8));
+        creator.setText(map.get("creator").toString());
         text.setText(map.get("text").toString());
-        createDate.setText(map.get("createDate").toString().substring(5,16));
+        createDate.setText(map.get("createDate").toString());
         replyCount.setText(map.get("replyCount").toString());
 
         return view;

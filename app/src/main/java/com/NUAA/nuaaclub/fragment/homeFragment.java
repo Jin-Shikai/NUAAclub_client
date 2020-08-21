@@ -141,7 +141,7 @@ public class homeFragment extends BaseFragment {
                         Map<String, Object> map = new HashMap<String, Object>();
                         map.put("creator", essay.getString("creator"));
                         map.put("text", essay.getString("text"));
-                        map.put("createDate", essay.getString("createDate"));
+                        map.put("createDate", essay.getString("createDate").substring(5,16));
                         map.put("replyCount", essay.get("replyCount"));
                         map.put("essayID", essay.get("essayID"));
                         list.add(map);
