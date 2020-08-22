@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.NUAA.nuaaclub.adapter.essayFragmentAdapter;
 import com.NUAA.nuaaclub.adapter.homeFragmentAdapter;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -118,12 +119,11 @@ public class EssayActivity extends Activity {
                         map.put("creator", reply.getString("creator"));//回复创建者
                         map.put("text", reply.getString("text"));//回复的文本
                         map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
-                        map.put("replyCount", reply.get("commentCount"));//回复的评论数
                         //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                         //这条信息在之后使用
                         list.add(map);
                     }
-                    final homeFragmentAdapter mEssayListAdapter = new homeFragmentAdapter(EssayActivity.this);
+                    final essayFragmentAdapter mEssayListAdapter = new essayFragmentAdapter(EssayActivity.this);
                     mEssayListAdapter.setList(list);
                     //为每一条reply设置点击事件
                     mEassyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

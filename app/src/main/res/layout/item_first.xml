@@ -41,7 +41,7 @@
         android:layout_toRightOf="@id/firstCreateTime"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="85dp"
-        android:text="评论:"
+        android:text="回复:"
         />
     <TextView
         android:id="@+id/firstReplyCount"
@@ -50,6 +50,6 @@
         android:layout_toRightOf="@id/firstCommentText"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:text="回复"
+        android:text="NaN"
         />
 </RelativeLayout>

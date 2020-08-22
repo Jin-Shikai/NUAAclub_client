@@ -36,11 +36,12 @@ public class EditEssayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editessay);
-
         //获取标志: 1为发贴文essay, 2为发回复reply
         flag = (int)getIntent().getExtras().get("flag");
-
+        if(flag == 1)
+            setContentView(R.layout.activity_editessay);
+        else if(flag == 2)
+            setContentView(R.layout.activity_editreply);
         mSubmit = (Button)findViewById(R.id.essaySubmit);
         mText=(EditText)findViewById(R.id.textEssay);
         mText.setText("");
