@@ -49,12 +49,13 @@ public class essayFragmentAdapter extends BaseAdapter {
         TextView creator=(TextView) view.findViewById(R.id.essaySender);
         TextView text=(TextView) view.findViewById(R.id.essayContent);
         TextView createDate=(TextView) view.findViewById(R.id.createTime_New);
-        TextView replyCount=(TextView) view.findViewById(R.id.replyCount);
+        TextView replyFloor=(TextView) view.findViewById(R.id.replyFloor);
 
         Map map=list.get(position);
         creator.setText(map.get("creator").toString());
         text.setText(map.get("text").toString());
         createDate.setText(map.get("createDate").toString());
+        replyFloor.setText(map.get("floor").toString());
 
         return view;
     }

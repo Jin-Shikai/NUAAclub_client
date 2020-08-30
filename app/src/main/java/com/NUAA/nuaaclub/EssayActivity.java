@@ -119,6 +119,7 @@ public class EssayActivity extends Activity {
                         map.put("creator", reply.getString("creator"));//回复创建者
                         map.put("text", reply.getString("text"));//回复的文本
                         map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
+                        map.put("floor",reply.getString("floor"));
                         //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                         //这条信息在之后使用
                         list.add(map);
