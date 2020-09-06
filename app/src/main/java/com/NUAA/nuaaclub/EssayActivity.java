@@ -1,7 +1,9 @@
 package com.NUAA.nuaaclub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,10 +13,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NUAA.nuaaclub.adapter.essayFragmentAdapter;
 import com.NUAA.nuaaclub.adapter.homeFragmentAdapter;
+import com.NUAA.nuaaclub.base.BaseFragment;
+import com.NUAA.nuaaclub.fragment.infoFragment_ok;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
@@ -39,12 +44,14 @@ public class EssayActivity extends Activity {
     private ListView mEassyListView;
     private SwipeRefreshLayout mEssayRefreshView;
     private Map<String, Object> mEssayBaseInfo=new HashMap<String, Object>();
+    public static SharedPreferences sharedPreferences ;
 
     private TextView firstSender;
     private TextView firstText;
     private TextView firstCreateTime;
     private TextView firstReplyCount;
     private Button makeReplayBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,7 @@ public class EssayActivity extends Activity {
         firstCreateTime=(TextView)findViewById(R.id.firstCreateTime);
         firstReplyCount=(TextView)findViewById(R.id.firstReplyCount);
         makeReplayBtn=(Button)findViewById(R.id.makeReplyBtn);
+        sharedPreferences= getSharedPreferences("data", Context.MODE_PRIVATE);
 
         //设置页面刷新
         mEassyListView=(ListView)findViewById(R.id.essayListView);
@@ -75,11 +83,18 @@ public class EssayActivity extends Activity {
         makeReplayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EssayActivity.this,EditEssayActivity.class);
-                intent.putExtra("flag",2);
-                intent.putExtra("essayID",mEssayID);
-                intent.putExtra("essayCreateDate",(String)mEssayBaseInfo.get("createDate"));
-                startActivity(intent);
+                String token=sharedPreferences.getString("token","");
+                if(token.length()<5) {
+                    Toast.makeText(EssayActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else {
+                    Intent intent = new Intent(EssayActivity.this, EditEssayActivity.class);
+                    intent.putExtra("flag", 2);
+                    intent.putExtra("essayID", mEssayID);
+                    intent.putExtra("essayCreateDate", (String) mEssayBaseInfo.get("createDate"));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -120,6 +135,7 @@ public class EssayActivity extends Activity {
                         map.put("text", reply.getString("text"));//回复的文本
                         map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
                         map.put("floor",reply.getString("floor"));
+                        map.put("ID",reply.getString("userID"));
                         //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                         //这条信息在之后使用
                         list.add(map);

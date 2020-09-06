@@ -93,11 +93,12 @@ public class EditEssayActivity extends AppCompatActivity {
                         String timeStr = formatter.format(curDate);
                         //得到标识符token
                         token = MainActivity.sharedPreferences.getString("token", "");
+                        String ID = MainActivity.sharedPreferences.getString("ID", "");
                         //初始化共性参数
                         map.put("createDate_New", timeStr);//发送时间
                         map.put("createDate", timeStr);//发送时间
                         map.put("text", textContent);//发送内容
-                        map.put("userID", token);//发送者ID
+                        map.put("userID", ID);//发送者ID
                         if(flag==1)
                         {
                             String creator = getRandomID(timeStr, token);

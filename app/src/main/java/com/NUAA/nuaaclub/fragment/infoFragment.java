@@ -105,6 +105,8 @@ public class infoFragment extends BaseFragment{
             mBtnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    editor.remove("ID");
+                    editor.putString("ID", ID);
                     //1. 创建请求队列
                     RequestQueue requestQueue = Volley.newRequestQueue(mContext);
                     //2. 创建post请求
