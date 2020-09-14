@@ -49,11 +49,6 @@ public class homeFragment extends BaseFragment {
     private SwipeRefreshLayout refreshview;
     private int mPosition;
 
-    public static Object JSONToObject(String json,Class beanClass) {
-        Gson gson = new Gson();
-        Object res = gson.fromJson(json, beanClass);
-        return res;
-    }
 
     @Override
     protected View initView() {

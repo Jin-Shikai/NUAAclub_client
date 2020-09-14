@@ -10,12 +10,14 @@ import com.NUAA.nuaaclub.base.BaseFragment;
 
 public class infoFragment_ok extends BaseFragment {
     private Button logoutBtn;
+    private Button myEssayBtn;
 
     @Override
     protected View initView() {
         View view=null;
         view = View.inflate(mContext, R.layout.fragment_info_ok, null);
         logoutBtn=(Button)view.findViewById(R.id.logoutBtn);
+        myEssayBtn=(Button)view.findViewById(R.id.myEssay);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +29,15 @@ public class infoFragment_ok extends BaseFragment {
                 Log.i("tokenAfter",tokenAfter);
                 MainActivity mainActivity=(MainActivity)getActivity();
                 BaseFragment to =mainActivity.getFrament(2);
+                //替换
+                mainActivity.switchFragment(infoFragment_ok.this,to);
+            }
+        });
+        myEssayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity=(MainActivity)getActivity();
+                BaseFragment to =mainActivity.getFrament(4);
                 //替换
                 mainActivity.switchFragment(infoFragment_ok.this,to);
             }
