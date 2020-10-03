@@ -36,11 +36,11 @@ public class EditEssayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //获取标志: 1为发贴文essay, 2为发回复reply
+        //获取标志: 1为发贴文essay, 2为发回复reply, 3为发BaseReply
         flag = (int)getIntent().getExtras().get("flag");
         if(flag == 1)
             setContentView(R.layout.activity_editessay);
-        else if(flag == 2)
+        else if(flag == 2 || flag == 3)
             setContentView(R.layout.activity_editreply);
         mSubmit = (Button)findViewById(R.id.essaySubmit);
         mText=(EditText)findViewById(R.id.textEssay);
@@ -68,10 +68,12 @@ public class EditEssayActivity extends AppCompatActivity {
                 //1. 创建请求队列
                 RequestQueue requestQueue = Volley.newRequestQueue(EditEssayActivity.this);
                 //2. 创建post请求
-                if(flag==1)
-                    url = "http://192.168.1.37:8080/LoginDemo/submitEssay";//发帖
-                else if(flag==2)
-                    url = "http://192.168.1.37:8080/LoginDemo/submitReplyServlet";//发回复
+                if(flag == 1)
+                    url = "http://192.168.1.100:8080/LoginDemo/submitEssay";//发帖
+                else if(flag == 2)
+                    url = "http://192.168.1.100:8080/LoginDemo/submitReplyServlet";//发回复
+                else if(flag == 3)
+                    url = "http://192.168.1.100:8080/LoginDemo/submitBaseReplyServlet";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -99,7 +101,7 @@ public class EditEssayActivity extends AppCompatActivity {
                         map.put("createDate", timeStr);//发送时间
                         map.put("text", textContent);//发送内容
                         map.put("userID", ID);//发送者ID
-                        if(flag==1)
+                        if(flag == 1)
                         {
                             String creator = getRandomID(timeStr, token);
                             SimpleDateFormat formatterForName = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -109,13 +111,15 @@ public class EditEssayActivity extends AppCompatActivity {
                             map.put("status", "2");//普通贴子
                             map.put("creator", creator);//发送者匿名ID
                         }
-                        else if(flag==2)
+                        else if(flag == 2 || flag == 3)
                         {
                             //如果发的是回复在请求参数中给出帖子ID
                             map.put("essayID",(String)getIntent().getExtras().get("essayID"));
                             //从帖子基本信息中得到贴文创建时间, 算法生成回复者匿名ID
                             String essayCreateDateStr=(String)getIntent().getExtras().get("essayCreateDate");
                             map.put("creator", getRandomID(essayCreateDateStr, token));
+                            if(flag == 3)
+                                map.put("floor",(String) getIntent().getExtras().get("floor"));
                         }
                         return map;
                     }

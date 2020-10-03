@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences= getSharedPreferences("data",Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("data",Context.MODE_PRIVATE);
         //初始化view
         initView();
         //初始化fragment

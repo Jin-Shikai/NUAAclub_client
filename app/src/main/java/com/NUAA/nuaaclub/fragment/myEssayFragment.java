@@ -50,7 +50,7 @@ public class myEssayFragment extends BaseFragment {
         //1. 创建请求队列
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         //2. 创建get请求
-        String url = "http://192.168.1.37:8080/LoginDemo/requestMyEssayListServlet";
+        String url = "http://192.168.1.100:8080/LoginDemo/requestMyEssayListServlet";
         final String ID = sharedPreferences.getString("ID", "");
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("ID", ID);
@@ -110,7 +110,7 @@ public class myEssayFragment extends BaseFragment {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("ID", "123");
+                        params.put("ID", ID);
                         return params;
                     }
                     @Override

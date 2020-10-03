@@ -6,6 +6,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:padding="10dp"
+    android:descendantFocusability="blocksDescendants"
     >
         <Button
             android:id="@+id/essaySender"
@@ -51,14 +52,25 @@
             android:layout_marginLeft="5dp"
             android:text="NaN"
             />
+
         <Button
-            android:id="@+id/operate"
-            android:layout_below="@id/replyFloorSymbol"
+            android:id="@+id/deleteBtn"
             android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/replyFloorSymbol"
             android:layout_marginLeft="270dp"
-            android:text="· · ·"
-            android:visibility="invisible"
+            android:layout_marginTop="15dp"
+            android:text="删除"
+            android:textSize="10sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/replyBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/deleteBtn"
+            android:layout_marginLeft="270dp"
+            android:layout_marginTop="10dp"
+            android:text="回复"
             android:textSize="10sp" />
 </RelativeLayout>

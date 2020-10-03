@@ -12,22 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NUAA.nuaaclub.EditEssayActivity;
-import com.NUAA.nuaaclub.EssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
-import com.NUAA.nuaaclub.base.BaseFragment;
 
 import java.util.List;
 import java.util.Map;
 
-public class essayFragmentAdapter extends BaseAdapter {
+public class baseReplyAdapter extends BaseAdapter {
 
     //数据列表
     List<Map<String,Object>> list;
     //反射器
     LayoutInflater inflater;
 
-    public essayFragmentAdapter(Context context) {
+    public baseReplyAdapter(Context context) {
         this.inflater=LayoutInflater.from(context);
     }
 
@@ -71,7 +69,7 @@ public class essayFragmentAdapter extends BaseAdapter {
         creator.setText(map.get("creator").toString());
         text.setText(map.get("text").toString());
         createDate.setText(map.get("createDate").toString());
-        replyFloor.setText(map.get("floor").toString());
+        replyFloor.setText("0");
 
         //为自己的回复设置操作可见
         String ID = sharedPreferences.getString("ID","");
@@ -90,26 +88,7 @@ public class essayFragmentAdapter extends BaseAdapter {
                 Toast.makeText(mContext,"删除".toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        replyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext,"回复".toString(), Toast.LENGTH_SHORT).show();
-                String token=sharedPreferences.getString("token","");
-                String essayID=sharedPreferences.getString("nowEssayID","");
-                String essayCreateDate = sharedPreferences.getString("essayCreateDate","");
-                if(token.length()<5) {
-                    Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Intent intent = new Intent(inflater.getContext(), EditEssayActivity.class);
-                    intent.putExtra("flag", 3);
-                    intent.putExtra("essayID", essayID);
-                    intent.putExtra("floor", map.get("floor").toString());
-                    intent.putExtra("essayCreateDate",essayCreateDate);
-                    mContext.startActivity(intent);
-                }
-            }
-        });
+        replyButton.setVisibility(View.INVISIBLE);
         return view;
     }
 }

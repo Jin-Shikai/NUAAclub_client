@@ -25,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
         //步骤1：创建一个SharedPreferences对象
         sharedPreferences= MainActivity.sharedPreferences;
         //步骤2： 实例化SharedPreferences.Editor对象
-        editor = sharedPreferences.edit();
+        editor = MainActivity.sharedPreferences.edit();
     }
 
     @Nullable
