@@ -29,7 +29,7 @@
         >
 
         <RadioButton
-            android:layout_weight="1"
+            android:layout_weight="0.3"
             android:id="@+id/rb_home"
             android:text="首页"
             android:drawableTop="@drawable/rb_home_drawable_selector"

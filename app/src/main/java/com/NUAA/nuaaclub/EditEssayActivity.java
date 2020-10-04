@@ -69,11 +69,11 @@ public class EditEssayActivity extends AppCompatActivity {
                 RequestQueue requestQueue = Volley.newRequestQueue(EditEssayActivity.this);
                 //2. 创建post请求
                 if(flag == 1)
-                    url = "http://192.168.1.100:8080/LoginDemo/submitEssay";//发帖
+                    url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitEssay";//发帖
                 else if(flag == 2)
-                    url = "http://192.168.1.100:8080/LoginDemo/submitReplyServlet";//发回复
+                    url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitReplyServlet";//发回复
                 else if(flag == 3)
-                    url = "http://192.168.1.100:8080/LoginDemo/submitBaseReplyServlet";
+                    url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitBaseReplyServlet";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {

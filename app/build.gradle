@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs{
+        config{
+            storeFile file("E:\\NUAAClub\\frontend\\apk\\apkpassword.jks")
+            storePassword 'jinshikai'
+            keyAlias 'key0'
+            keyPassword 'jinshikai'
+        }
+    }
 }
 
 dependencies {

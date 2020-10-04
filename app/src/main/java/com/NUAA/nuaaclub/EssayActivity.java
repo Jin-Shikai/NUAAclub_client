@@ -159,7 +159,7 @@ public class EssayActivity extends Activity {
         //1. 创建请求队列
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         //2. 创建get请求
-        String url = "http://192.168.1.100:8080/LoginDemo/essay/"+mEssayID+".json";
+        String url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/essay/"+mEssayID+".json";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<org.json.JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {

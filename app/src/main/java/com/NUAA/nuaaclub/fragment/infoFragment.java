@@ -110,7 +110,7 @@ public class infoFragment extends BaseFragment{
                     //1. 创建请求队列
                     RequestQueue requestQueue = Volley.newRequestQueue(mContext);
                     //2. 创建post请求
-                    String url = "http://192.168.1.100:8080/LoginDemo/LoginServlet";
+                    String url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/LoginServlet";
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String s) {
