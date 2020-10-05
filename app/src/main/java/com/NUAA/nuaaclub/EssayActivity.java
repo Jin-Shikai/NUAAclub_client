@@ -112,6 +112,8 @@ public class EssayActivity extends Activity {
             JSONObject theEssay=new JSONObject(content.toString());
             Toast.makeText(EssayActivity.this, "通过缓存访问", Toast.LENGTH_SHORT).show();
             loadJsonObj(theEssay);
+            reader.close();
+            in.close();
         } catch (FileNotFoundException e) {
             //文件不在缓存中, 只能通过网络访问
             Log.i("warning:","file not found");
@@ -122,19 +124,13 @@ public class EssayActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if(reader!=null)
                     reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            editor.remove("essayCreateDate");
-            editor.putString("essayCreateDate", (String) mEssayBaseInfo.get("createDate"));
-            //步骤4：提交
-            editor.commit();
         }
-
         makeReplayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +203,10 @@ public class EssayActivity extends Activity {
             mEssayBaseInfo.put("replyCount",jsonObject.getString("replyCount"));
             mEssayBaseInfo.put("createDate",jsonObject.getString("createDate"));
             mEssayBaseInfo.put("essayID",jsonObject.getString("essayID"));
-
+            editor.remove("essayCreateDate");
+            editor.putString("essayCreateDate", (String) mEssayBaseInfo.get("createDate"));
+            //步骤4：提交
+            editor.commit();
             //将1L的信息硬写上去
             firstSender.setText(jsonObject.getString("creator"));
             firstText.setText(jsonObject.getString("text"));
@@ -254,20 +253,21 @@ public class EssayActivity extends Activity {
         FileOutputStream out = null;
         BufferedWriter writer = null;
         try {
+            deleteFile(essayID);
             //设置文件名称，以及存储方式
             out = openFileOutput(essayID, Context.MODE_PRIVATE);
             //创建一个OutputStreamWriter对象，传入BufferedWriter的构造器中
             writer = new BufferedWriter(new OutputStreamWriter(out));
             //向文件中写入数据
             writer.write(objStr);
+            writer.close();
+            out.close();
+            FileInputStream in = null;
+            in = openFileInput(mEssayID);
+            in.close();
+            //getCacheDir();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-    }
+        }
 }

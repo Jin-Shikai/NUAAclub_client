@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/submitlayout">
+    <include layout="@layout/editmessagetitlebar"/>
+
+    <EditText
+        android:id="@+id/textEssay"
+        android:layout_gravity="top"
+        android:gravity="top"
+        android:hint="随便说点啥"
+        android:textSize="25dp"
+        android:paddingBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+    <Button
+        android:id="@+id/essaySubmit"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="100dp"
+        android:text="发送"
+        android:textSize="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

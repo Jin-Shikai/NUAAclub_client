@@ -2,6 +2,7 @@ package com.NUAA.nuaaclub.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,9 +25,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.NUAA.nuaaclub.EditEssayActivity;
 import com.NUAA.nuaaclub.EssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
+import com.NUAA.nuaaclub.StringRequestOverride.StringRequestWithToken;
 import com.NUAA.nuaaclub.base.BaseFragment;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -177,13 +180,39 @@ public class infoFragment extends BaseFragment{
                         editor.remove("token");
                         editor.putString("token", token);
                         editor.commit();
+
+                        //1. 创建请求队列
+                        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+                        //2. 创建post请求
+                        String url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/LoginServlet";
+                        StringRequest stringRequest = new StringRequestWithToken(Request.Method.POST, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(mContext, "网络似乎不通了", Toast.LENGTH_SHORT).show();
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put("password","0");
+                                map.put("ID",ID);
+                                map.put("status","2");
+                                return map;
+                            }
+                        };
+                        //3. 将请求添加入请求队列
+                        requestQueue.add(stringRequest);
                         MainActivity mainActivity = (MainActivity) getActivity();
                         BaseFragment to = mainActivity.getFrament(3);
                         //替换
                         mainActivity.switchFragment(infoFragment.this,to);
                     }
                     else{
-                        Toast.makeText(mContext, "登录失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

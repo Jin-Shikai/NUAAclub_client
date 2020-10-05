@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,12 +37,14 @@ public class EditEssayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //获取标志: 1为发贴文essay, 2为发回复reply, 3为发BaseReply
+        //获取标志: 1为发贴文essay, 2为发回复reply, 3为发BaseReply, 4为发私信message
         flag = (int)getIntent().getExtras().get("flag");
         if(flag == 1)
             setContentView(R.layout.activity_editessay);
         else if(flag == 2 || flag == 3)
             setContentView(R.layout.activity_editreply);
+        else if(flag == 4)
+            setContentView(R.layout.activity_editmessage);
         mSubmit = (Button)findViewById(R.id.essaySubmit);
         mText=(EditText)findViewById(R.id.textEssay);
         mText.setText("");
@@ -74,6 +77,8 @@ public class EditEssayActivity extends AppCompatActivity {
                     url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitReplyServlet";//发回复
                 else if(flag == 3)
                     url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitBaseReplyServlet";
+                else if(flag == 4)
+                    url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitMessageServlet";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -82,6 +87,7 @@ public class EditEssayActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(EditEssayActivity.this, "网络似乎不通了", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
@@ -93,26 +99,24 @@ public class EditEssayActivity extends AppCompatActivity {
                         Date curDate = new Date(System.currentTimeMillis());
                         //得到用于显示的时间
                         String timeStr = formatter.format(curDate);
+                        SimpleDateFormat formatterForName = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String timeStrForName = formatterForName.format(curDate);
                         //得到标识符token
                         token = MainActivity.sharedPreferences.getString("token", "");
                         String ID = MainActivity.sharedPreferences.getString("ID", "");
+                        String creator = getRandomID(timeStrForName, token);
                         //初始化共性参数
                         map.put("createDate_New", timeStr);//发送时间
-                        map.put("createDate", timeStr);//发送时间
+                        map.put("createDate", timeStr);//发送时间(已废弃)
                         map.put("text", textContent);//发送内容
                         map.put("userID", ID);//发送者ID
-                        if(flag == 1)
-                        {
-                            String creator = getRandomID(timeStr, token);
-                            SimpleDateFormat formatterForName = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String timeStrForName = formatterForName.format(curDate);
+                        if(flag == 1) {
                             map.put("latestDate_New", timeStr);
                             map.put("essayID", creator + "_" + timeStrForName.substring(0,10));//权宜之计
                             map.put("status", "2");//普通贴子
-                            map.put("creator", creator);//发送者匿名ID
+                            map.put("creator",creator);//发送者匿名ID
                         }
-                        else if(flag == 2 || flag == 3)
-                        {
+                        else if(flag == 2 || flag == 3) {
                             //如果发的是回复在请求参数中给出帖子ID
                             map.put("essayID",(String)getIntent().getExtras().get("essayID"));
                             //从帖子基本信息中得到贴文创建时间, 算法生成回复者匿名ID
@@ -120,6 +124,15 @@ public class EditEssayActivity extends AppCompatActivity {
                             map.put("creator", getRandomID(essayCreateDateStr, token));
                             if(flag == 3)
                                 map.put("floor",(String) getIntent().getExtras().get("floor"));
+                        }
+                        else if(flag == 4) {
+                            //私信: 给出两方的ID和匿名ID
+                            map.put("fromID",getIntent().getExtras().get("fromID").toString());
+                            map.put("toID",getIntent().getExtras().get("toID").toString());
+                            map.put("fromCreator",creator);
+                            map.put("toCreator",getIntent().getExtras().get("toCreator").toString());
+                            map.put("messageID", creator + "_"+ getIntent().getExtras().get("toCreator").toString()
+                                    + timeStrForName.substring(0,15));//权宜之计
                         }
                         return map;
                     }

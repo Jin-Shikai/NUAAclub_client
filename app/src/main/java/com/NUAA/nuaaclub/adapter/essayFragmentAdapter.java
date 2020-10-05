@@ -93,14 +93,13 @@ public class essayFragmentAdapter extends BaseAdapter {
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"回复".toString(), Toast.LENGTH_SHORT).show();
                 String token=sharedPreferences.getString("token","");
-                String essayID=sharedPreferences.getString("nowEssayID","");
-                String essayCreateDate = sharedPreferences.getString("essayCreateDate","");
                 if(token.length()<5) {
                     Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    String essayID=sharedPreferences.getString("nowEssayID","");
+                    String essayCreateDate = sharedPreferences.getString("essayCreateDate","");
                     Intent intent = new Intent(inflater.getContext(), EditEssayActivity.class);
                     intent.putExtra("flag", 3);
                     intent.putExtra("essayID", essayID);

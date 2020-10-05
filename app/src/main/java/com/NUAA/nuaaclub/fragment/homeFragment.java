@@ -87,6 +87,7 @@ public class homeFragment extends BaseFragment {
                         MainActivity mainActivity=(MainActivity)getActivity();
                         if(s.equals("101"))
                         {
+                            Toast.makeText(mContext, "还没有登录", Toast.LENGTH_SHORT).show();
                             mainActivity.mRg_main.check(R.id.rb_info);
                         }
                         else
@@ -99,6 +100,7 @@ public class homeFragment extends BaseFragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(mContext, "网络似乎不通了", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override

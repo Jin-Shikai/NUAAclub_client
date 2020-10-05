@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NUAA.nuaaclub.EditEssayActivity;
+import com.NUAA.nuaaclub.EssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
 
@@ -72,14 +73,19 @@ public class baseReplyAdapter extends BaseAdapter {
         replyFloor.setText("0");
 
         //为自己的回复设置操作可见
-        String ID = sharedPreferences.getString("ID","");
-        if(map.get("ID").toString().equals(ID))
+        final String ID = sharedPreferences.getString("ID","");//自己的ID
+        if(map.get("ID").toString().equals(ID))//与这条回复的发送者的ID相同
             deleteButton.setVisibility(View.VISIBLE);
         //为发送者的ID按钮设置监听
         creator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,map.get("creator").toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, EditEssayActivity.class);
+                intent.putExtra("fromID", ID);
+                intent.putExtra("toID", map.get("ID").toString());
+                intent.putExtra("toCreator", map.get("creator").toString());
+                intent.putExtra("flag",4);
+                mContext.startActivity(intent);
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
