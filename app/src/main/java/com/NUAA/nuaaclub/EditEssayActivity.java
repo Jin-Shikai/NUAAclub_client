@@ -41,9 +41,9 @@ public class EditEssayActivity extends AppCompatActivity {
         flag = (int)getIntent().getExtras().get("flag");
         if(flag == 1)
             setContentView(R.layout.activity_editessay);
-        else if(flag == 2 || flag == 3)
+        else if(flag == 2 || flag == 3 || flag == 5)
             setContentView(R.layout.activity_editreply);
-        else if(flag == 4)
+        else if(flag == 4 )
             setContentView(R.layout.activity_editmessage);
         mSubmit = (Button)findViewById(R.id.essaySubmit);
         mText=(EditText)findViewById(R.id.textEssay);
@@ -79,6 +79,8 @@ public class EditEssayActivity extends AppCompatActivity {
                     url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitBaseReplyServlet";
                 else if(flag == 4)
                     url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitMessageServlet";
+                else if(flag == 5)
+                    url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/submitMessageReplyServlet";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -106,8 +108,8 @@ public class EditEssayActivity extends AppCompatActivity {
                         String ID = MainActivity.sharedPreferences.getString("ID", "");
                         String creator = getRandomID(timeStrForName, token);
                         //初始化共性参数
-                        map.put("createDate_New", timeStr);//发送时间
-                        map.put("createDate", timeStr);//发送时间(已废弃)
+                        map.put("createDate_New", timeStr);//发送时间(用于存入数据库加快查找速度)
+                        map.put("createDate", timeStrForName);//发送时间(用于显示的字符串)
                         map.put("text", textContent);//发送内容
                         map.put("userID", ID);//发送者ID
                         if(flag == 1) {
@@ -131,8 +133,15 @@ public class EditEssayActivity extends AppCompatActivity {
                             map.put("toID",getIntent().getExtras().get("toID").toString());
                             map.put("fromCreator",creator);
                             map.put("toCreator",getIntent().getExtras().get("toCreator").toString());
-                            map.put("messageID", creator + "_"+ getIntent().getExtras().get("toCreator").toString()
-                                    + timeStrForName.substring(0,15));//权宜之计
+                            map.put("fileName", creator + "_"+ getIntent().getExtras().get("toCreator").toString()
+                                    + timeStrForName.substring(5,10));//权宜之计
+                        }
+                        else if(flag == 5) {
+                            //私信: 给出两方的ID和匿名ID
+                            map.put("fromID",getIntent().getExtras().get("fromID").toString());
+                            map.put("toID",getIntent().getExtras().get("toID").toString());
+                            map.put("fromCreator",creator);
+                            map.put("fileName", getIntent().getExtras().get("fileName").toString());//权宜之计
                         }
                         return map;
                     }

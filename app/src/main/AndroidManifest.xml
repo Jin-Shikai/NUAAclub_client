@@ -27,6 +27,7 @@
         <activity android:name=".EssayActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".BaseReplyActivity"/>
+        <activity android:name=".MessageActivity"/>
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
     </application>
