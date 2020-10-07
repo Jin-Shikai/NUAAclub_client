@@ -14,6 +14,7 @@ public class infoFragment_ok extends BaseFragment {
     private Button logoutBtn;
     private Button myEssayBtn;
     private Button cleanCacheBtn;
+    private Button updatePasswordBtn;
     @Override
     protected View initView() {
         View view=null;
@@ -21,6 +22,7 @@ public class infoFragment_ok extends BaseFragment {
         logoutBtn=(Button)view.findViewById(R.id.logoutBtn);
         myEssayBtn=(Button)view.findViewById(R.id.myEssay);
         cleanCacheBtn=view.findViewById(R.id.cleanCacheBtn);
+        updatePasswordBtn = (Button)view.findViewById(R.id.updatePassword);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +57,15 @@ public class infoFragment_ok extends BaseFragment {
                 strings = mContext.fileList();
                 if(strings.length==0)
                     Toast.makeText(mContext, "清理完成", Toast.LENGTH_SHORT).show();
+            }
+        });
+        updatePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity=(MainActivity)getActivity();
+                BaseFragment to =mainActivity.getFrament(5);
+                //替换
+                mainActivity.switchFragment(infoFragment_ok.this,to);
             }
         });
         return view;

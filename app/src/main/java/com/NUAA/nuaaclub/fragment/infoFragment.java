@@ -63,10 +63,11 @@ public class infoFragment extends BaseFragment{
     private static final String TAG = infoFragment.class.getSimpleName();//得到类名称
     private TextView textView;
     private String ID;
-    private String Password;
+    private String inputCode;
     private String Status;
     private Button getCodeBtn;
     private String code;
+    private Random random;
 //
 //    @Nullable
 //    @Override
@@ -77,7 +78,8 @@ public class infoFragment extends BaseFragment{
     @Override
     protected View initView() {
         View view=null;
-        Log.e(TAG,"info页面已初始化");
+        random = new Random();
+        code = String.valueOf(random.nextInt(10000) % (10000 - 1000 + 1) + 1000);
             view = View.inflate(mContext, R.layout.fragment_info, null);
             //手机号栏监听
             mID = (EditText) view.findViewById(R.id.et_phone);
@@ -111,7 +113,7 @@ public class infoFragment extends BaseFragment{
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Password = s.toString();
+                    inputCode = s.toString();
                 }
             });
             getCodeBtn = (Button) view.findViewById(R.id.getcode);
@@ -119,8 +121,7 @@ public class infoFragment extends BaseFragment{
                 @Override
                 public void onClick(View view) {
                     RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-                    Random random = new Random();
-                    code = String.valueOf(random.nextInt(10000) % (10000 - 1000 + 1) + 1000);
+
                     if (ID.length() != 11)
                         Toast.makeText(mContext, "手机号格式不正确", Toast.LENGTH_SHORT).show();
                     else {
@@ -132,7 +133,7 @@ public class infoFragment extends BaseFragment{
                                     if (jsonObject.get("errcode").equals(0))
                                         Toast.makeText(mContext, "验证码发送成功", Toast.LENGTH_SHORT).show();
                                     else
-                                        Toast.makeText(mContext, "验证码发送失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, jsonObject.get("errmsg").toString(), Toast.LENGTH_SHORT).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -170,9 +171,10 @@ public class infoFragment extends BaseFragment{
             mBtnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(code.length()!=4)
-                        Toast.makeText(mContext, "验证码格式不正确", Toast.LENGTH_SHORT).show();
-                    else if (code.equals(Password)) {
+                    String myPassword = sharedPreferences.getString("password","");
+                    if(inputCode.length()<4 || inputCode.length()>15)
+                        Toast.makeText(mContext, "输入有误", Toast.LENGTH_SHORT).show();
+                    else if (code.equals(inputCode) || (!myPassword.isEmpty() && myPassword.equals(inputCode))) {
                         editor.remove("ID");
                         editor.putString("ID", ID);
                         //生成token
@@ -188,6 +190,11 @@ public class infoFragment extends BaseFragment{
                         StringRequest stringRequest = new StringRequestWithToken(Request.Method.POST, url, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String s) {
+                                code = String.valueOf(random.nextInt(10000) % (10000 - 1000 + 1) + 1000);
+                                MainActivity mainActivity = (MainActivity) getActivity();
+                                BaseFragment to = mainActivity.getFrament(3);
+                                //替换
+                                mainActivity.switchFragment(infoFragment.this,to);
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -206,10 +213,6 @@ public class infoFragment extends BaseFragment{
                         };
                         //3. 将请求添加入请求队列
                         requestQueue.add(stringRequest);
-                        MainActivity mainActivity = (MainActivity) getActivity();
-                        BaseFragment to = mainActivity.getFrament(3);
-                        //替换
-                        mainActivity.switchFragment(infoFragment.this,to);
                     }
                     else{
                         Toast.makeText(mContext, "验证码错误", Toast.LENGTH_SHORT).show();

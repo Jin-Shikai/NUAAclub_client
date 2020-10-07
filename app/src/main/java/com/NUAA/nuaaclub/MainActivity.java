@@ -22,6 +22,7 @@ import com.NUAA.nuaaclub.fragment.infoFragment;
 import com.NUAA.nuaaclub.fragment.infoFragment_ok;
 import com.NUAA.nuaaclub.fragment.messageFragment;
 import com.NUAA.nuaaclub.fragment.myEssayFragment;
+import com.NUAA.nuaaclub.fragment.updatePasswordFragment;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -146,6 +147,7 @@ public class MainActivity extends FragmentActivity {
         mBaseFragmentList.add(new infoFragment());//个人信息界面: 2
         mBaseFragmentList.add(new infoFragment_ok());//已登录界面: 3
         mBaseFragmentList.add(new myEssayFragment());//我的贴文界面:4
+        mBaseFragmentList.add(new updatePasswordFragment());//更换密码界面:5
     }
 
     private void initView() {

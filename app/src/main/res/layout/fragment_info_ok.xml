@@ -7,19 +7,19 @@
     android:padding="15dp">
     <TextView
         android:text="您已登录"
-        android:textSize="50dp"
+        android:textSize="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <Button
         android:id="@+id/logoutBtn"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="注销登录"
         android:textSize="20dp" />
     <Button
         android:id="@+id/cleanCacheBtn"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="清理缓存"
@@ -31,5 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="我的贴文"
+        android:textSize="20dp" />
+    <Button
+        android:id="@+id/updatePassword"
+        android:layout_below="@id/myEssay"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更改密码"
         android:textSize="20dp" />
 </RelativeLayout>
