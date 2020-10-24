@@ -60,7 +60,7 @@ public class updatePasswordFragment extends BaseFragment {
         saveNewPasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(newPasswordStr.length()<4)
+                if(newPasswordStr.length()<6)
                     Toast.makeText(mContext, "密码至少6位", Toast.LENGTH_SHORT).show();
                 else if(newPasswordStr.length()>15)
                     Toast.makeText(mContext, "密码至多15位", Toast.LENGTH_SHORT).show();

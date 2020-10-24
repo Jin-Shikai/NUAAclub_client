@@ -15,7 +15,16 @@ import com.NUAA.nuaaclub.EditEssayActivity;
 import com.NUAA.nuaaclub.EssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
+import com.NUAA.nuaaclub.StringRequestOverride.StringRequestWithToken;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +79,11 @@ public class baseReplyAdapter extends BaseAdapter {
         creator.setText(map.get("creator").toString());
         text.setText(map.get("text").toString());
         createDate.setText(map.get("createDate").toString());
-        replyFloor.setText("0");
+        replyFloor.setText(map.get("baseFloor").toString());
+
+        final String essayID = map.get("essayID").toString();
+        final String floorNum = map.get("floor").toString();
+        final String baseFloor = map.get("baseFloor").toString();
 
         //为自己的回复设置操作可见
         final String ID = sharedPreferences.getString("ID","");//自己的ID
@@ -88,12 +101,37 @@ public class baseReplyAdapter extends BaseAdapter {
                 mContext.startActivity(intent);
             }
         });
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"删除".toString(), Toast.LENGTH_SHORT).show();
+                RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+                String url = "http://"+mContext.getResources().getString(R.string.address)+":8080/LoginDemo/deleteBaseReply";
+                StringRequest stringRequest = new StringRequestWithToken(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Toast.makeText(mContext, "已删除", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(mContext, "网络似乎不通了", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("essayID",essayID);
+                        map.put("floor",floorNum);
+                        map.put("baseFloor",baseFloor);
+                        return map;
+                    }
+                };
+                //3. 将请求添加入请求队列
+                requestQueue.add(stringRequest);
             }
         });
+
         replyButton.setVisibility(View.INVISIBLE);
         return view;
     }

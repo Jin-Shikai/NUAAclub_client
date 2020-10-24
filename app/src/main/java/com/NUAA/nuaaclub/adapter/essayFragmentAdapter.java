@@ -15,8 +15,26 @@ import com.NUAA.nuaaclub.EditEssayActivity;
 import com.NUAA.nuaaclub.EssayActivity;
 import com.NUAA.nuaaclub.MainActivity;
 import com.NUAA.nuaaclub.R;
+import com.NUAA.nuaaclub.StringRequestOverride.StringRequestWithToken;
 import com.NUAA.nuaaclub.base.BaseFragment;
+import com.NUAA.nuaaclub.fragment.infoFragment;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +71,7 @@ public class essayFragmentAdapter extends BaseAdapter {
     public SharedPreferences sharedPreferences;
     protected Context mContext;
     private String ID;
+    private String essayID;
 
     @Override
     public View getView(final int position, View converView, ViewGroup parent)
@@ -73,6 +92,8 @@ public class essayFragmentAdapter extends BaseAdapter {
         text.setText(map.get("text").toString());
         createDate.setText(map.get("createDate").toString());
         replyFloor.setText(map.get("floor").toString());
+        final String floorNum = map.get("floor").toString();
+        essayID = map.get("essayID").toString();
 
         //为自己的回复设置操作可见
         ID = sharedPreferences.getString("ID","");
@@ -93,9 +114,32 @@ public class essayFragmentAdapter extends BaseAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"删除".toString(), Toast.LENGTH_SHORT).show();
+                RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+                String url = "http://"+mContext.getResources().getString(R.string.address)+":8080/LoginDemo/deleteReply";
+                StringRequest stringRequest = new StringRequestWithToken(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Toast.makeText(mContext, "已删除", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(mContext, "网络似乎不通了", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("essayID",essayID);
+                        map.put("floor",floorNum);
+                        return map;
+                    }
+                };
+                //3. 将请求添加入请求队列
+                requestQueue.add(stringRequest);
             }
         });
+
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

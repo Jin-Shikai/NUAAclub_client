@@ -1,13 +1,8 @@
 package com.NUAA.nuaaclub;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +10,6 @@ import android.widget.Toast;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.NUAA.nuaaclub.adapter.baseReplyAdapter;
-import com.NUAA.nuaaclub.adapter.essayFragmentAdapter;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.RequestQueue;
@@ -29,11 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,13 +36,13 @@ public class BaseReplyActivity extends Activity {
     private TextView firstReplyCount;
     private ListView mEassyListView;
     private String essayID;
-    private int floor;
+    private int floorNumber;
     private SwipeRefreshLayout mEssayRefreshView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        floor = (int) getIntent().getExtras().get("floor");
+        floorNumber = Integer.parseInt(getIntent().getExtras().get("floor").toString())-1;
         essayID = (String) getIntent().getExtras().get("essayID");
 
         setContentView(R.layout.activity_basereply);
@@ -91,7 +80,7 @@ public class BaseReplyActivity extends Activity {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    loadFloor((JSONObject) jsonObject.getJSONArray("replyList").get(floor));
+                    loadFloor((JSONObject) jsonObject.getJSONArray("replyList").get(floorNumber));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -131,18 +120,22 @@ public class BaseReplyActivity extends Activity {
             firstSender.setText(floor.getString("creator"));
             firstText.setText(floor.getString("text"));
             firstCreateTime.setText(floor.getString("createDate").substring(5,16));
-
+            firstReplyCount.setText(floor.getString("baseReplyCnt"));
             JSONArray replyArray = (JSONArray)floor.get("BaseReplyList");
 
             for (int i = 0; i < replyArray.length(); i++) {
                 JSONObject reply = (JSONObject) replyArray.get(i);
                 //准备每一项的资源文件
                 map = new HashMap<String, Object>();
+                if(reply.getString("status").equals("0"))
+                    continue;
                 map.put("creator", reply.getString("creator"));//回复创建者
                 map.put("text", reply.getString("text"));//回复的文本
                 map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
-                map.put("floor",0);
+                map.put("floor",floorNumber);
                 map.put("ID",reply.getString("userID"));
+                map.put("baseFloor",reply.getString("baseFloor").toString());
+                map.put("essayID",essayID);
                 //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                 //这条信息在之后使用
                 list.add(map);

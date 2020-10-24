@@ -217,6 +217,8 @@ public class EssayActivity extends Activity {
 
             for (int i = 0; i < replyArray.length(); i++) {
                 JSONObject reply = (JSONObject) replyArray.get(i);
+                if(reply.getString("replyStatus").equals("0"))
+                    continue;
                 //准备每一项的资源文件
                 map = new HashMap<String, Object>();
                 map.put("creator", reply.getString("creator"));//回复创建者
@@ -224,6 +226,8 @@ public class EssayActivity extends Activity {
                 map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
                 map.put("floor",reply.getString("floor"));
                 map.put("ID",reply.getString("userID"));
+                map.put("essayID",mEssayID);
+                map.put("replyStatus",reply.getString("replyStatus"));
                 //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
                 //这条信息在之后使用
                 list.add(map);
@@ -234,8 +238,10 @@ public class EssayActivity extends Activity {
             mEassyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TextView v =  view.findViewById(R.id.replyFloor);
+                    String floornum = v.getText().toString();
                             Intent intent = new Intent(EssayActivity.this, BaseReplyActivity.class);
-                            intent.putExtra("floor", position);
+                            intent.putExtra("floor", String.valueOf(floornum));
                             intent.putExtra("essayID",mEssayID);
                             startActivity(intent);
                 }
