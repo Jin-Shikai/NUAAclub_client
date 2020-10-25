@@ -50,6 +50,15 @@
         android:layout_toRightOf="@id/firstCommentText"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:text="NaN"
-        />
+        android:text="NaN" />
+    <Button
+        android:id="@+id/deleteEssayBtn"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/firstReplyCount"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="15dp"
+        android:text="删除"
+        android:textSize="10sp"
+        android:visibility="invisible" />
 </RelativeLayout>

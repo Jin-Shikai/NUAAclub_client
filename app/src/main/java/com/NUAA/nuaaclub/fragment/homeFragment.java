@@ -132,9 +132,11 @@ public class homeFragment extends BaseFragment {
                 //准备List资源文件
                 List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
                 try {
-                    for (int i = 0; i < jsonArray.length() - 1; i++) {
+                    for (int i = 0; i < jsonArray.length()-1; i++) {
                         JSONObject essay = (JSONObject) jsonArray.get(i);
                         //准备每一项的资源文件
+                        if(essay.getString("status").equals("0"))
+                            continue;
                         Map<String, Object> map = new HashMap<String, Object>();
                         map.put("creator", essay.getString("creator"));
                         map.put("text", essay.getString("text"));

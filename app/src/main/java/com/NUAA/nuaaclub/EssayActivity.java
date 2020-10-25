@@ -17,17 +17,21 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.NUAA.nuaaclub.StringRequestOverride.StringRequestWithToken;
 import com.NUAA.nuaaclub.adapter.essayFragmentAdapter;
 import com.NUAA.nuaaclub.adapter.homeFragmentAdapter;
 import com.NUAA.nuaaclub.base.BaseFragment;
 import com.NUAA.nuaaclub.fragment.infoFragment_ok;
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -61,6 +65,7 @@ public class EssayActivity extends Activity {
     private TextView firstCreateTime;
     private TextView firstReplyCount;
     private Button makeReplayBtn;
+    private Button deleteEssayBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,7 @@ public class EssayActivity extends Activity {
         firstCreateTime=(TextView)findViewById(R.id.firstCreateTime);
         firstReplyCount=(TextView)findViewById(R.id.firstReplyCount);
         makeReplayBtn=(Button)findViewById(R.id.makeReplyBtn);
-
+        deleteEssayBtn=(Button)findViewById(R.id.deleteEssayBtn);
 
         //设置页面刷新
         mEassyListView=(ListView)findViewById(R.id.essayListView);
@@ -93,6 +98,35 @@ public class EssayActivity extends Activity {
                         mEssayRefreshView.setRefreshing(false);
                     }
                 }, 2500);
+            }
+        });
+
+
+        deleteEssayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RequestQueue requestQueue = Volley.newRequestQueue(EssayActivity.this);
+                String url = "http://"+getResources().getString(R.string.address)+":8080/LoginDemo/deleteEssay";
+                StringRequest stringRequest = new StringRequestWithToken(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Toast.makeText(EssayActivity.this, "已删除", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(EssayActivity.this, "网络似乎不通了", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("essayID",mEssayID);
+                        return map;
+                    }
+                };
+                //3. 将请求添加入请求队列
+                requestQueue.add(stringRequest);
             }
         });
         //先尝试从文件缓存中读取贴文
@@ -212,7 +246,9 @@ public class EssayActivity extends Activity {
             firstText.setText(jsonObject.getString("text"));
             firstCreateTime.setText(jsonObject.getString("createDate").substring(5,16));
             firstReplyCount.setText(jsonObject.getString("replyCount"));
-
+            final String myID = sharedPreferences.getString("ID","");//自己的ID
+            if(myID.equals(jsonObject.getString("userID")))
+                deleteEssayBtn.setVisibility(View.VISIBLE);
             JSONArray replyArray= (JSONArray)jsonObject.get("replyList");
 
             for (int i = 0; i < replyArray.length(); i++) {
