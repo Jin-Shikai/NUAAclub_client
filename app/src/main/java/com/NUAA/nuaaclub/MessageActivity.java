@@ -148,7 +148,7 @@ public class MessageActivity extends Activity {
                 map.put("createDate", reply.getString("createDate").substring(5, 16));//回复的时间
                 map.put("floor",0);
                 map.put("ID",reply.getString("userID"));
-                //map.put("replyStatus", reply.get("replyStatus"));//该回复的状态,"1"正常  "0"删除
+                map.put("isMessage", 1);//表明这是一条私信的回复
                 //这条信息在之后使用
                 list.add(map);
             }

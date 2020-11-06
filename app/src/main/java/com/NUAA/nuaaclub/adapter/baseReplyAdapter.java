@@ -74,16 +74,26 @@ public class baseReplyAdapter extends BaseAdapter {
         mContext=inflater.getContext();
         //创建一个SharedPreferences对象
         sharedPreferences = MainActivity.sharedPreferences;
-
+        final StringBuilder essayID=new StringBuilder("");
+        final StringBuilder floorNum=new StringBuilder("");
+        final StringBuilder baseFloor=new StringBuilder("");
+        final StringBuilder floor = new StringBuilder("");
         final Map map=list.get(position);
+        if(map.get("isMessage")!=null)
+            replyFloor.setVisibility(View.INVISIBLE);
         creator.setText(map.get("creator").toString());
         text.setText(map.get("text").toString());
         createDate.setText(map.get("createDate").toString());
-        replyFloor.setText(map.get("baseFloor").toString());
-
-        final String essayID = map.get("essayID").toString();
-        final String floorNum = map.get("floor").toString();
-        final String baseFloor = map.get("baseFloor").toString();
+        if(map.get("baseFloor")!=null)
+            replyFloor.setText(map.get("baseFloor").toString());
+        if(map.get("essayID")!=null)
+            essayID.append( map.get("essayID").toString());
+        if(map.get("floorNum")!=null)
+            floorNum.append( map.get("floorNum").toString());
+        if(map.get("floor")!=null)
+            floor.append( map.get("floor").toString());
+        if(map.get("baseFloor")!=null)
+            baseFloor.append( map.get("baseFloor").toString());
 
         //为自己的回复设置操作可见
         final String ID = sharedPreferences.getString("ID","");//自己的ID
@@ -121,9 +131,9 @@ public class baseReplyAdapter extends BaseAdapter {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> map = new HashMap<String, String>();
-                        map.put("essayID",essayID);
-                        map.put("floor",floorNum);
-                        map.put("baseFloor",baseFloor);
+                        map.put("essayID",essayID.toString());
+                        map.put("floor",floor.toString());
+                        map.put("baseFloor",baseFloor.toString());
                         return map;
                     }
                 };

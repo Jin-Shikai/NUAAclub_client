@@ -102,7 +102,7 @@ public class messageFragment extends BaseFragment {
                                                 map.put("text", msg.getString("text"));
                                                 map.put("createDate", msg.getString("createDate").substring(5,16));
                                                 map.put("essayID", msg.getString("fileName"));
-                                                map.put("replyCount", 0);
+                                                map.put("replyCount", msg.getString("replyCnt"));
                                                 list.add(map);
                                             }
                                             adapter = new homeFragmentAdapter(mContext);
